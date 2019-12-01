@@ -8,10 +8,12 @@ package classes;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,6 +26,8 @@ import javax.swing.SpinnerNumberModel;
 public class FORM_INICIO extends javax.swing.JFrame {
     ArrayList<String> estados = new ArrayList<>();
     ActualizaValores actualiza = new ActualizaValores(estados);
+    Date fh = new Date();
+    DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm:ss");
     ObtenerClima consulta_clima;
     Integer temph1;
     Integer temph2;
@@ -45,7 +49,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
     ImageIcon bathAiIcon = new ImageIcon("src/img/bathA.jpg");
     ImageIcon hornoIcon = new ImageIcon("src/img/horno.jpg");
     
-    
+    //Carga de archivos de sonido en la memoria
     File sonido_aa = new File("src/audio/aire_acondicionado.wav");
     File sonido_horno = new File("src/audio/horno.wav");
     File sonido_int = new File("src/audio/switch.wav");
@@ -275,7 +279,6 @@ public class FORM_INICIO extends javax.swing.JFrame {
         SpinnerNumberModel refri = new SpinnerNumberModel(7,1,7,1);
         control_refri.setModel(refri);
         
-        
         SpinnerNumberModel congelador = new SpinnerNumberModel(-14,-25,-14,1);
         control_conge.setModel(congelador);
     }
@@ -291,6 +294,50 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void cargarImagen(ImageIcon image, JLabel component){
         image = new ImageIcon(image.getImage().getScaledInstance(component.getWidth(),component.getHeight(),Image.SCALE_SMOOTH));
         component.setIcon(image);
+    }
+    
+    private void guardaRegistros(String hab,String evt_code,String state){
+        String objeto=null;
+        String change;
+        try {
+            FileWriter fw = new FileWriter("registro_eventos.txt",true);
+            switch(evt_code){
+                case "A":
+                    objeto="Detector de movimiento";
+                    break;
+                case "L":
+                    objeto="Luces";
+                    break;
+                case "V":
+                    objeto="Ventilador";
+                    break;
+                case "T":
+                    objeto="Televisión";
+                    break;
+                case "AA":
+                    objeto="Aire acondicionado";
+                    break;
+                case "R":
+                    objeto="Refrigerador";
+                    break;
+                case "C":
+                    objeto="Congelador";
+                case "H":
+                    objeto="Horno";
+                    break;
+            }
+            if (state.equals("1")) {
+                change="Encendido";
+            } else if (state.equals("0")) {
+                change="Apagado";
+            }else{
+                change="Cambio de temperatura:"+state+" C";
+            }
+            fw.write(hab+","+objeto+","+change+","+hourdateFormat.format(fh)+"\n");
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("No se pudo abrir el archivo");
+        }
     }
 
     /**
@@ -398,6 +445,11 @@ public class FORM_INICIO extends javax.swing.JFrame {
         panel_vGeneral.add(detectorMov_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 60, -1, -1));
 
         jButton3.setText("Registro de eventos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         panel_vGeneral.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, 160, -1));
 
         jButton4.setText("Salir");
@@ -739,6 +791,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             img_venti2.setVisible(false);
             this.estados.set(16,"0");
         }
+        guardaRegistros("Habitación 3", "V", this.estados.get(16));
     }//GEN-LAST:event_venti2_btnActionPerformed
 
     private void aire_acondicionado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aire_acondicionado2ActionPerformed
@@ -759,6 +812,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             this.tempHab2.setText(Float.toString(temp_casa));
             this.estados.set(12,"0");;
         }
+        guardaRegistros("Habitación 2", "AA", this.estados.get(12));
     }//GEN-LAST:event_aire_acondicionado2ActionPerformed
 
     private void aire_acondicionado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aire_acondicionado1ActionPerformed
@@ -779,6 +833,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             this.tempHab1.setText(Float.toString(temp_casa));
             this.estados.set(9,"0");
         }
+        guardaRegistros("Habitación 1", "AA", this.estados.get(9));
     }//GEN-LAST:event_aire_acondicionado1ActionPerformed
 
     private void venti1_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venti1_btnActionPerformed
@@ -796,6 +851,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             img_venti1.setVisible(false);
             this.estados.set(3,"0");
         }
+        guardaRegistros("Sala", "V", this.estados.get(3));
     }//GEN-LAST:event_venti1_btnActionPerformed
 
     private void detectorMov_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detectorMov_btnActionPerformed
@@ -809,6 +865,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             detectorMov_btn.setForeground(Color.RED);
             this.estados.set(0,"0");
         }
+        guardaRegistros("Toda la casa", "A", this.estados.get(0));
     }//GEN-LAST:event_detectorMov_btnActionPerformed
 
     private void img_vistaGralMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_img_vistaGralMouseExited
@@ -839,6 +896,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             horno.setForeground(Color.RED);
             this.estados.set(7,"0");
         }
+        guardaRegistros("Cocina", "H", this.estados.get(7));
     }//GEN-LAST:event_hornoActionPerformed
 
     private void luz1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz1ActionPerformed
@@ -856,7 +914,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             cargarImagen(salaIcon, img_sala);
             this.estados.set(1,"1");
         }
-
+        guardaRegistros("Sala", "L", this.estados.get(1));
     }//GEN-LAST:event_luz1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -902,6 +960,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTele1.setForeground(Color.RED);
             this.estados.set(2,"0");
         }
+        guardaRegistros("Sala", "T", this.estados.get(2));
     }//GEN-LAST:event_controlTele1ActionPerformed
 
     private void controlTele2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_controlTele2ActionPerformed
@@ -917,6 +976,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTele2.setForeground(Color.RED);
             this.estados.set(15,"0");
         }
+        guardaRegistros("Habitación 3", "T", this.estados.get(15));
     }//GEN-LAST:event_controlTele2ActionPerformed
 
     private void luz3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz3ActionPerformed
@@ -934,6 +994,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             cargarImagen(hab1Icon, img_hab1);
             this.estados.set(8,"1");
         }
+        guardaRegistros("Habitación 1", "L", this.estados.get(8));
     }//GEN-LAST:event_luz3ActionPerformed
 
     private void luz4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz4ActionPerformed
@@ -951,6 +1012,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             cargarImagen(hab2Icon, img_hab2);
             this.estados.set(11,"1");
         }
+        guardaRegistros("Habitación 2", "L", this.estados.get(11));
     }//GEN-LAST:event_luz4ActionPerformed
 
     private void luz2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz2ActionPerformed
@@ -968,6 +1030,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             cargarImagen(cocinaIcon, img_cocina);
             this.estados.set(4,"1");
         }
+        guardaRegistros("Cocina", "L", this.estados.get(4));
     }//GEN-LAST:event_luz2ActionPerformed
 
     private void luz5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz5ActionPerformed
@@ -985,6 +1048,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             cargarImagen(hab3Icon, img_hab3);
             this.estados.set(14,"1");
         }
+        guardaRegistros("Habitación 3", "L", this.estados.get(14));
     }//GEN-LAST:event_luz5ActionPerformed
 
     private void luz6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz6ActionPerformed
@@ -1002,7 +1066,15 @@ public class FORM_INICIO extends javax.swing.JFrame {
             cargarImagen(bathIcon, img_bath);
             this.estados.set(17,"1");
         }
+        guardaRegistros("Baño", "L", this.estados.get(17));
     }//GEN-LAST:event_luz6ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        FORM_REGISTRO_EVENTOS fr = new FORM_REGISTRO_EVENTOS();
+        fr.setLocationRelativeTo(this);
+        fr.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

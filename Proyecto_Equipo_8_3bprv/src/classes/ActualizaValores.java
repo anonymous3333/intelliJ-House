@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import javax.swing.SwingWorker;
 
@@ -50,9 +51,7 @@ public class ActualizaValores extends SwingWorker<Void, Void>{
     
     public Void doInBackground(){
         String[] buffer = leeArchivo("estado_actual.txt").split(",");
-        for(String e: buffer){
-            lista_status_actual.add(e);
-        }
+        lista_status_actual.addAll(Arrays.asList(buffer));
         lista_status_anterior = (ArrayList) lista_status_actual.clone();  
         while(true){
         if (isCancelled())    //if calcultion is canceled
