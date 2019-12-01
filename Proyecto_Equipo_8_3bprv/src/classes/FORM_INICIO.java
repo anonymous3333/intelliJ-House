@@ -7,10 +7,12 @@ package classes;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.io.File;
 import java.util.ArrayList;
-
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
@@ -20,9 +22,9 @@ import javax.swing.SpinnerNumberModel;
  * @author POE3BPRV
  */
 public class FORM_INICIO extends javax.swing.JFrame {
-    public static ArrayList<String> estados = new ArrayList<>();
-    ActualizaValores update = new ActualizaValores(estados);
-    FORM_CLIMA clima;
+    ArrayList<String> estados = new ArrayList<>();
+    ActualizaValores actualiza = new ActualizaValores(estados);
+    ObtenerClima consulta_clima;
     Integer temph1;
     Integer temph2;
     float temp_casa;
@@ -44,21 +46,31 @@ public class FORM_INICIO extends javax.swing.JFrame {
     ImageIcon hornoIcon = new ImageIcon("src/img/horno.jpg");
     
     
+    File sonido_aa = new File("src/audio/aire_acondicionado.wav");
+    File sonido_horno = new File("src/audio/horno.wav");
+    File sonido_int = new File("src/audio/switch.wav");
+    File sonido_venti = new File("src/audio/ventilador.wav");
+    
+    
     public FORM_INICIO() {
         initComponents();
-        ActualizaValores update = new ActualizaValores(estados);
-        update.execute();
-        clima = new FORM_CLIMA();
-        temp_casa=clima.TEMP+5;
-        cargarImagen(vista_generalIcon, img_vistaGral);
-        cargarImagen(hornoIcon, img_horno);
-        img_alarma.setVisible(false);
+        consulta_clima = new ObtenerClima(
+            this.texto_clima,this.temp_exterior,this.hum_exterior,this.img_clima);
+        //Hilos para guardar cambios y consultar clima exterior
+        actualiza.execute();
+        consulta_clima.execute();
+        temp_casa=Float.parseFloat(this.temp_exterior.getText())+3;
         cargaControles();
         cargaEstados();
     }
     
     
     private void cargaEstados(){
+        
+        cargarImagen(vista_generalIcon, img_vistaGral);
+        img_alarma.setVisible(false);
+        cargarImagen(hornoIcon, img_horno);
+        
         //Detector de movimiento
         if(this.estados.get(0).equals("1")){
             detectorMov_btn.setSelected(true);
@@ -290,13 +302,11 @@ public class FORM_INICIO extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Paneles = new javax.swing.JTabbedPane();
+        paneles = new javax.swing.JTabbedPane();
         panel_vGeneral = new javax.swing.JPanel();
         img_alarma = new javax.swing.JLabel();
         img_vistaGral = new javax.swing.JLabel();
         detectorMov_btn = new javax.swing.JToggleButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         panel_Sala = new javax.swing.JPanel();
@@ -326,6 +336,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
         luz3 = new javax.swing.JToggleButton();
         controlTemp1 = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         panel_Hab2 = new javax.swing.JPanel();
         img_hab2 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -334,6 +345,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
         luz4 = new javax.swing.JToggleButton();
         controlTemp2 = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
         panel_Hab3 = new javax.swing.JPanel();
         img_tele2 = new javax.swing.JLabel();
         img_venti2 = new javax.swing.JLabel();
@@ -345,13 +357,21 @@ public class FORM_INICIO extends javax.swing.JFrame {
         panel_Bath = new javax.swing.JPanel();
         img_bath = new javax.swing.JLabel();
         luz6 = new javax.swing.JToggleButton();
+        panel_clima = new javax.swing.JPanel();
+        img_clima = new javax.swing.JLabel();
+        temp_exterior = new javax.swing.JLabel();
+        texto_clima = new javax.swing.JLabel();
+        hum_exterior = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        fondo_clima = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("InteliJ House");
-        setMinimumSize(new java.awt.Dimension(1024, 720));
-        setPreferredSize(new java.awt.Dimension(1366, 720));
 
-        Paneles.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        paneles.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
         panel_vGeneral.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -377,19 +397,8 @@ public class FORM_INICIO extends javax.swing.JFrame {
         });
         panel_vGeneral.add(detectorMov_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 60, -1, -1));
 
-        jButton1.setText("Clima exterior");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        panel_vGeneral.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 100, 170, -1));
-
-        jButton2.setText("Niveles de agua");
-        panel_vGeneral.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, 160, -1));
-
         jButton3.setText("Registro de eventos");
-        panel_vGeneral.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 100, 160, -1));
+        panel_vGeneral.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, 160, -1));
 
         jButton4.setText("Salir");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -397,9 +406,9 @@ public class FORM_INICIO extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        panel_vGeneral.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 80, 100, -1));
+        panel_vGeneral.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 60, 100, -1));
 
-        Paneles.addTab("Vista General", panel_vGeneral);
+        paneles.addTab("Vista General", panel_vGeneral);
 
         panel_Sala.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -442,7 +451,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
         });
         panel_Sala.add(controlTele1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 140, 160, 30));
 
-        Paneles.addTab("Sala", panel_Sala);
+        paneles.addTab("Sala", panel_Sala);
 
         panel_Cocina.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -503,7 +512,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
         });
         panel_Cocina.add(control_conge, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 160, 120, -1));
 
-        Paneles.addTab("Cocina", panel_Cocina);
+        paneles.addTab("Cocina", panel_Cocina);
 
         panel_Hab1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -545,7 +554,10 @@ public class FORM_INICIO extends javax.swing.JFrame {
         jLabel1.setText("Control de temperatura:");
         panel_Hab1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 110, 140, 20));
 
-        Paneles.addTab("Habitacion 1", panel_Hab1);
+        jLabel9.setText("C");
+        panel_Hab1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 200, -1, 30));
+
+        paneles.addTab("Habitacion 1", panel_Hab1);
 
         panel_Hab2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -558,7 +570,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
 
         tempHab2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tempHab2.setText("temp");
-        panel_Hab2.add(tempHab2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 200, 50, 20));
+        panel_Hab2.add(tempHab2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 200, 50, 30));
 
         aire_acondicionado2.setText("Aire acondicionado: OFF");
         aire_acondicionado2.addActionListener(new java.awt.event.ActionListener() {
@@ -587,7 +599,10 @@ public class FORM_INICIO extends javax.swing.JFrame {
         jLabel2.setText("Control de temperatura:");
         panel_Hab2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 110, 140, 20));
 
-        Paneles.addTab("Habitacion 2", panel_Hab2);
+        jLabel12.setText("C");
+        panel_Hab2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 200, -1, 30));
+
+        paneles.addTab("Habitacion 2", panel_Hab2);
 
         panel_Hab3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -630,7 +645,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
         });
         panel_Hab3.add(controlTele2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 120, 150, -1));
 
-        Paneles.addTab("Habitacion 3", panel_Hab3);
+        paneles.addTab("Habitacion 3", panel_Hab3);
 
         panel_Bath.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -645,7 +660,50 @@ public class FORM_INICIO extends javax.swing.JFrame {
         });
         panel_Bath.add(luz6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 30, 140, -1));
 
-        Paneles.addTab("Baño", panel_Bath);
+        paneles.addTab("Baño", panel_Bath);
+
+        panel_clima.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panel_clima.add(img_clima, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 288, 288));
+
+        temp_exterior.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        temp_exterior.setText("0.0");
+        panel_clima.add(temp_exterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 450, -1, 46));
+
+        texto_clima.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        texto_clima.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        texto_clima.setText("texto_clima");
+        panel_clima.add(texto_clima, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, 288, 31));
+
+        hum_exterior.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        hum_exterior.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        hum_exterior.setText("0.0");
+        panel_clima.add(hum_exterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 450, 75, 46));
+
+        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Temperatura:");
+        panel_clima.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 450, -1, 46));
+
+        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("C");
+        panel_clima.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 450, -1, 50));
+
+        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Humedad:");
+        panel_clima.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 450, -1, 46));
+
+        jLabel8.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("%");
+        panel_clima.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 450, -1, 46));
+
+        fondo_clima.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo_clima.png"))); // NOI18N
+        fondo_clima.setText("jLabel9");
+        panel_clima.add(fondo_clima, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 1250, 620));
+
+        paneles.addTab("Clima exterior", panel_clima);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -653,15 +711,14 @@ public class FORM_INICIO extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Paneles)
+                .addComponent(paneles)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Paneles)
-                .addContainerGap())
+                .addComponent(paneles))
         );
 
         pack();
@@ -670,13 +727,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void venti2_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venti2_btnActionPerformed
         // TODO add your handling code here:
         if(venti2_btn.isSelected()){
-            Sonido.play("src/audio/ventilador.wav", false);
+            Sonido.play(sonido_venti);
             venti2_btn.setText("Ventilador: ON");
             venti2_btn.setForeground(Color.GREEN);
             img_venti2.setVisible(true);
             this.estados.set(16,"1");
         }else{
-            Sonido.play("src/audio/ventilador.wav", false);
+            Sonido.play(sonido_venti);
             venti2_btn.setText("Ventilador: OFF");
             venti2_btn.setForeground(Color.RED);
             img_venti2.setVisible(false);
@@ -690,14 +747,14 @@ public class FORM_INICIO extends javax.swing.JFrame {
         if(aire_acondicionado2.isSelected()){
             aire_acondicionado2.setText("Aire acondicionado: ON");
             aire_acondicionado2.setForeground(Color.GREEN);
-            Sonido.play("src/audio/aire_acondicionado.wav",false);
+            Sonido.play(sonido_aa);
             controlTemp2.setEnabled(true);
             this.tempHab2.setText(controlTemp2.getValue().toString());
             this.estados.set(12,"1");
         }else{
             aire_acondicionado2.setText("Aire acondicionado: OFF");
             aire_acondicionado2.setForeground(Color.RED);
-            Sonido.play("src/audio/aire_acondicionado.wav",false);
+            Sonido.play(sonido_aa);
             controlTemp2.setEnabled(false);
             this.tempHab2.setText(Float.toString(temp_casa));
             this.estados.set(12,"0");;
@@ -710,14 +767,14 @@ public class FORM_INICIO extends javax.swing.JFrame {
         if(aire_acondicionado1.isSelected()){
             aire_acondicionado1.setText("Aire acondicionado: ON");
             aire_acondicionado1.setForeground(Color.GREEN);
-            Sonido.play("src/audio/aire_acondicionado.wav",false);
+            Sonido.play(sonido_aa);
             controlTemp1.setEnabled(true);
             this.tempHab1.setText(controlTemp1.getValue().toString());
             this.estados.set(9,"1");
         }else{
             aire_acondicionado1.setText("Aire acondicionado: OFF");
             aire_acondicionado1.setForeground(Color.RED);
-            Sonido.play("src/audio/aire_acondicionado.wav",false);
+            Sonido.play(sonido_aa);
             controlTemp1.setEnabled(false);
             this.tempHab1.setText(Float.toString(temp_casa));
             this.estados.set(9,"0");
@@ -727,13 +784,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void venti1_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venti1_btnActionPerformed
         // TODO add your handling code here:
         if(venti1_btn.isSelected()){
-            Sonido.play("src/audio/ventilador.wav", false);
+            Sonido.play(sonido_venti);
             venti1_btn.setText("Ventilador: ON");
             venti1_btn.setForeground(Color.GREEN);
             img_venti1.setVisible(true);
             this.estados.set(3,"1");
         }else{
-            Sonido.play("src/audio/ventilador.wav", false);
+            Sonido.play(sonido_venti);
             venti1_btn.setText("Ventilador: OFF");
             venti1_btn.setForeground(Color.RED);
             img_venti1.setVisible(false);
@@ -771,7 +828,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void hornoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hornoActionPerformed
         // TODO add your handling code here:
         if(horno.isSelected()){
-            Sonido.play("src/audio/horno.wav", false);
+            Sonido.play(sonido_horno);
             img_horno.setVisible(true);
             horno.setText("Horno: ON");
             horno.setForeground(Color.GREEN);
@@ -787,13 +844,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void luz1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz1ActionPerformed
         // TODO add your handling code here:
         if(luz1.isSelected()){
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz1.setText("Luces: OFF");
             luz1.setForeground(Color.RED);
             cargarImagen(salaAIcon, img_sala);
             this.estados.set(1,"0");
         }else{
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz1.setText("Luces: ON");
             luz1.setForeground(Color.GREEN);
             cargarImagen(salaIcon, img_sala);
@@ -801,12 +858,6 @@ public class FORM_INICIO extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_luz1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        clima.setLocationRelativeTo(this);
-        clima.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -871,13 +922,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void luz3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz3ActionPerformed
         // TODO add your handling code here:
         if(luz3.isSelected()){
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz3.setText("Luces: OFF");
             luz3.setForeground(Color.RED);
             cargarImagen(hab1AIcon, img_hab1);
             this.estados.set(8,"0");
         }else{
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz3.setText("Luces: ON");
             luz3.setForeground(Color.GREEN);
             cargarImagen(hab1Icon, img_hab1);
@@ -888,13 +939,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void luz4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz4ActionPerformed
         // TODO add your handling code here:
         if(luz4.isSelected()){
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz4.setText("Luces: OFF");
             luz4.setForeground(Color.RED);
             cargarImagen(hab2AIcon, img_hab2);
             this.estados.set(11,"0");
         }else{
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz4.setText("Luces: ON");
             luz4.setForeground(Color.GREEN);
             cargarImagen(hab2Icon, img_hab2);
@@ -905,13 +956,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void luz2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz2ActionPerformed
         // TODO add your handling code here:
         if(luz2.isSelected()){
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz2.setText("Luces: OFF");
             luz2.setForeground(Color.RED);
             cargarImagen(cocinaAiIcon, img_cocina);
             this.estados.set(4,"0");
         }else{
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz2.setText("Luces: ON");
             luz2.setForeground(Color.GREEN);
             cargarImagen(cocinaIcon, img_cocina);
@@ -922,13 +973,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void luz5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz5ActionPerformed
         // TODO add your handling code here:
         if(luz5.isSelected()){
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz5.setText("Luces: OFF");
             luz5.setForeground(Color.RED);
             cargarImagen(hab3AIcon, img_hab3);
             this.estados.set(14,"0");
         }else{
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz5.setText("Luces: ON");
             luz5.setForeground(Color.GREEN);
             cargarImagen(hab3Icon, img_hab3);
@@ -939,13 +990,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void luz6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz6ActionPerformed
         // TODO add your handling code here:
         if(luz6.isSelected()){
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz6.setText("Luces: OFF");
             luz6.setForeground(Color.RED);
             cargarImagen(bathAiIcon, img_bath);
             this.estados.set(17,"0");
         }else{
-            Sonido.play("src/audio/switch.wav", false);
+            Sonido.play(sonido_int);
             luz6.setText("Luces: ON");
             luz6.setForeground(Color.GREEN);
             cargarImagen(bathIcon, img_bath);
@@ -989,7 +1040,6 @@ public class FORM_INICIO extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane Paneles;
     private javax.swing.JToggleButton aire_acondicionado1;
     private javax.swing.JToggleButton aire_acondicionado2;
     private javax.swing.JToggleButton controlTele1;
@@ -999,9 +1049,12 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JSpinner control_conge;
     private javax.swing.JSpinner control_refri;
     private javax.swing.JToggleButton detectorMov_btn;
+    private javax.swing.JLabel fondo_clima;
     private javax.swing.JToggleButton horno;
+    private javax.swing.JLabel hum_exterior;
     private javax.swing.JLabel img_alarma;
     private javax.swing.JLabel img_bath;
+    private javax.swing.JLabel img_clima;
     private javax.swing.JLabel img_cocina;
     private javax.swing.JLabel img_hab1;
     private javax.swing.JLabel img_hab2;
@@ -1015,16 +1068,20 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JLabel img_venti2;
     private javax.swing.JLabel img_venti2D;
     private javax.swing.JLabel img_vistaGral;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JToggleButton luz1;
     private javax.swing.JToggleButton luz2;
     private javax.swing.JToggleButton luz3;
@@ -1037,11 +1094,15 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JPanel panel_Hab2;
     private javax.swing.JPanel panel_Hab3;
     private javax.swing.JPanel panel_Sala;
+    private javax.swing.JPanel panel_clima;
     private javax.swing.JPanel panel_vGeneral;
+    private javax.swing.JTabbedPane paneles;
     public static javax.swing.JLabel tempHab1;
     public static javax.swing.JLabel tempHab2;
     private javax.swing.JLabel tempRefri;
     private javax.swing.JLabel temp_Cong;
+    private javax.swing.JLabel temp_exterior;
+    private javax.swing.JLabel texto_clima;
     private javax.swing.JToggleButton venti1_btn;
     private javax.swing.JToggleButton venti2_btn;
     // End of variables declaration//GEN-END:variables

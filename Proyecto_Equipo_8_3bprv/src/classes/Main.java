@@ -7,10 +7,11 @@ package classes;
 
 public class Main {
     
-    public static void main(String[] args) throws InterruptedException {
-       
+    public static void main(String[] args){
         FORM_INICIO inicio = new FORM_INICIO();
         inicio.setLocationRelativeTo(inicio);
         inicio.setVisible(true);
+        
+        
     }
 }

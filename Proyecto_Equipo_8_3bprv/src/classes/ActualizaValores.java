@@ -5,6 +5,7 @@
  */
 package classes;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,10 +30,26 @@ public class ActualizaValores extends SwingWorker<Void, Void>{
         lista_status_actual= lista;
     }
     
+    private static String leeArchivo(String path){
+        String cadena = null;
+        String content = null;
+        try {
+            
+            java.io.FileReader fr = new java.io.FileReader(path);
+            try (BufferedReader br = new BufferedReader(fr)) {
+                while((content=br.readLine())!=null){
+                    cadena=content;
+                }
+            }
+            return cadena;
+        } catch (IOException e) {
+            System.out.println("Ourrió un error al intentar abrir el archivo");
+            return null;
+        }
+    }
+    
     public Void doInBackground(){
-        Archivos reader = new Archivos();
-        reader.leeArchivo("estado_actual.txt");
-        String[] buffer = reader.getCadena().split(",");
+        String[] buffer = leeArchivo("estado_actual.txt").split(",");
         for(String e: buffer){
             lista_status_actual.add(e);
         }
