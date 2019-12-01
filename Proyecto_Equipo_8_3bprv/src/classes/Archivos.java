@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author kevin
  */
 public class Archivos {
-    String cadena;
+    private String cadena;
     
     public void leeArchivo(String path){
         String content = null;
@@ -41,5 +41,9 @@ public class Archivos {
             System.out.println("Ocurrió un error al intentar escribir en el archivo...");
         }
         
+    }
+
+    public String getCadena() {
+        return cadena;
     }
 }
