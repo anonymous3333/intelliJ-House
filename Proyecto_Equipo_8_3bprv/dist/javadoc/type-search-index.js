@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"classes","l":"ActualizaValores"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"classes","l":"BajaAgua"},{"p":"classes","l":"FORM_INICIO"},{"p":"classes","l":"FORM_REGISTRO_EVENTOS"},{"p":"classes","l":"Main"},{"p":"classes","l":"ObtenerClima"},{"p":"classes","l":"Sonido"}]
