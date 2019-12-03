@@ -2,3 +2,194 @@ Habitación 1,Aire acondicionado,24C,02/12/2019,22:00:00
 Habitación 2,Aire acondicionado,22C,02/12/2019,22:00:01
 Habitación 1,Aire acondicionado,24 C,02/12/2019,22:04:00
 Habitación 2,Aire acondicionado,22 C,02/12/2019,22:04:00
+Habitación 1,Aire acondicionado,24 C,03/12/2019,12:48:31
+Habitación 2,Aire acondicionado,22 C,03/12/2019,12:48:31
+Techo,Llave de paso,Se abrió,03/12/2019,12:49:10
+Baño,Lavamanos,Se abrió,03/12/2019,12:49:12
+Baño,Regadera,Se abrió,03/12/2019,12:49:12
+Habitación 1,Aire acondicionado,24 C,03/12/2019,14:37:28
+Habitación 2,Aire acondicionado,22 C,03/12/2019,14:37:29
+Habitación 1,Aire acondicionado,24 C,03/12/2019,14:39:53
+Habitación 2,Aire acondicionado,22 C,03/12/2019,14:39:53
+Habitación 1,Aire acondicionado,24 C,03/12/2019,14:41:05
+Habitación 2,Aire acondicionado,22 C,03/12/2019,14:41:05
+Habitación 1,Aire acondicionado,24 C,03/12/2019,14:42:40
+Habitación 2,Aire acondicionado,22 C,03/12/2019,14:42:40
+Habitación 1,Aire acondicionado,24 C,03/12/2019,14:43:43
+Habitación 2,Aire acondicionado,22 C,03/12/2019,14:43:43
+Baño,Lavamanos,Se abrió,03/12/2019,14:43:51
+Baño,Regadera,Se abrió,03/12/2019,14:43:55
+Baño,Lavamanos,Se cerró,03/12/2019,14:44:09
+Baño,Regadera,Se cerró,03/12/2019,14:44:10
+Baño,Lavamanos,Se abrió,03/12/2019,14:44:17
+Baño,Regadera,Se abrió,03/12/2019,14:44:18
+Techo,Llave de paso,Se cerró,03/12/2019,14:44:25
+Baño,Lavamanos,Se cerró,03/12/2019,14:44:27
+Baño,Regadera,Se cerró,03/12/2019,14:44:27
+Habitación 1,Aire acondicionado,24 C,03/12/2019,14:44:59
+Habitación 2,Aire acondicionado,22 C,03/12/2019,14:44:59
+Toda la casa,Detector de movimiento,Se encendió,03/12/2019,14:45:04
+Toda la casa,Detector de movimiento,Se apagó,03/12/2019,14:45:26
+Sala,Ventilador,Se encendió,03/12/2019,14:46:55
+Sala,Ventilador,Se encendió,03/12/2019,14:46:58
+Sala,Televisión,Se encendió,03/12/2019,14:47:00
+Sala,Televisión,Se apagó,03/12/2019,14:47:03
+Sala,Luces,Se apagó,03/12/2019,14:47:09
+Sala,Luces,Se encendió,03/12/2019,14:47:11
+Sala,Luces,Se apagó,03/12/2019,14:47:13
+Sala,Luces,Se encendió,03/12/2019,14:47:15
+Sala,Ventilador,Se encendió,03/12/2019,14:47:16
+Sala,Ventilador,Se encendió,03/12/2019,14:47:18
+Cocina,Congelador,-15 C,03/12/2019,14:47:29
+Cocina,Congelador,-16 C,03/12/2019,14:47:29
+Cocina,Congelador,-17 C,03/12/2019,14:47:30
+Cocina,Refrigerador,6 C,03/12/2019,14:47:32
+Cocina,Refrigerador,5 C,03/12/2019,14:47:33
+Cocina,Horno,Se encendió,03/12/2019,14:47:35
+Cocina,Horno,Se apagó,03/12/2019,14:47:36
+Cocina,Horno,Se encendió,03/12/2019,14:47:37
+Cocina,Horno,Se apagó,03/12/2019,14:47:38
+Cocina,Luces,Se apagó,03/12/2019,14:47:41
+Cocina,Luces,Se encendió,03/12/2019,14:47:42
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:48:02
+Habitación 1,Aire acondicionado,23 C,03/12/2019,14:48:05
+Habitación 1,Aire acondicionado,22 C,03/12/2019,14:48:05
+Habitación 1,Aire acondicionado,21 C,03/12/2019,14:48:06
+Habitación 1,Aire acondicionado,20 C,03/12/2019,14:48:06
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:48:08
+Habitación 1,Luces,Se apagó,03/12/2019,14:48:14
+Habitación 1,Luces,Se apagó,03/12/2019,14:48:15
+Habitación 3,Ventilador,Se encendió,03/12/2019,14:48:25
+Habitación 3,Ventilador,Se apagó,03/12/2019,14:48:26
+Habitación 3,Televisión,Se encendió,03/12/2019,14:48:27
+Habitación 3,Televisión,Se apagó,03/12/2019,14:48:30
+Habitación 3,Televisión,Se encendió,03/12/2019,14:48:31
+Habitación 3,Televisión,Se apagó,03/12/2019,14:48:33
+Habitación 3,Luces,Se apagó,03/12/2019,14:48:35
+Habitación 3,Luces,Se encendió,03/12/2019,14:48:36
+Baño,Retrete,Se descargó,03/12/2019,14:48:42
+Baño,Regadera,Se abrió,03/12/2019,14:48:45
+Baño,Lavamanos,Se abrió,03/12/2019,14:48:46
+Techo,Llave de paso,Se abrió,03/12/2019,14:48:51
+Baño,Lavamanos,Se cerró,03/12/2019,14:48:55
+Baño,Regadera,Se cerró,03/12/2019,14:48:56
+Techo,Llave de paso,Se cerró,03/12/2019,14:49:02
+Techo,Llave de paso,Se abrió,03/12/2019,14:49:03
+Techo,Llave de paso,Se cerró,03/12/2019,14:49:04
+Baño,Lavamanos,Se abrió,03/12/2019,14:49:15
+Baño,Regadera,Se abrió,03/12/2019,14:49:16
+Techo,Llave de paso,Se abrió,03/12/2019,14:49:20
+Techo,Llave de paso,Se cerró,03/12/2019,14:49:29
+Baño,Lavamanos,Se cerró,03/12/2019,14:49:36
+Baño,Regadera,Se cerró,03/12/2019,14:49:38
+Habitación 3,Ventilador,Se encendió,03/12/2019,14:49:55
+Habitación 3,Ventilador,Se apagó,03/12/2019,14:49:57
+Habitación 3,Luces,Se apagó,03/12/2019,14:49:59
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:21
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:22
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:23
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:23
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:24
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:24
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:25
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:25
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:26
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:26
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:27
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:27
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:28
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:29
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:29
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:30
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:30
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:31
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:31
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:32
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:32
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:33
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:34
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:34
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:35
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:35
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:36
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:36
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:37
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:38
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:38
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:39
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:49
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:50
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:50
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:50
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:51
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:51
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:52
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:59
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:59
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:50:59
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:50:59
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:51:00
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:51:00
+Habitación 1,Aire acondicionado,Se apagó,03/12/2019,14:51:00
+Habitación 1,Aire acondicionado,Se encendió,03/12/2019,14:51:01
+Cocina,Refrigerador,5 C,03/12/2019,15:02:18
+Cocina,Congelador,-17 C,03/12/2019,15:02:18
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:02:18
+Habitación 2,Aire acondicionado,22 C,03/12/2019,15:02:18
+Baño,Retrete,Se descargó,03/12/2019,15:02:24
+Baño,Retrete,Se descargó,03/12/2019,15:02:42
+Baño,Retrete,Se descargó,03/12/2019,15:03:01
+Cocina,Refrigerador,5 C,03/12/2019,15:06:29
+Cocina,Congelador,-17 C,03/12/2019,15:06:29
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:06:29
+Habitación 2,Aire acondicionado,22 C,03/12/2019,15:06:29
+Baño,Lavamanos,Se abrió,03/12/2019,15:06:40
+Baño,Lavamanos,Se cerró,03/12/2019,15:06:48
+Baño,Regadera,Se abrió,03/12/2019,15:06:53
+Baño,Regadera,Se cerró,03/12/2019,15:06:57
+Baño,Retrete,Se descargó,03/12/2019,15:07:02
+Cocina,Refrigerador,5 C,03/12/2019,15:11:14
+Cocina,Congelador,-17 C,03/12/2019,15:11:14
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:11:14
+Habitación 2,Aire acondicionado,100 C,03/12/2019,15:11:14
+Cocina,Refrigerador,5 C,03/12/2019,15:12:40
+Cocina,Congelador,-17 C,03/12/2019,15:12:40
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:12:40
+Habitación 2,Aire acondicionado,100 C,03/12/2019,15:12:40
+Cocina,Refrigerador,5 C,03/12/2019,15:20:17
+Cocina,Congelador,-17 C,03/12/2019,15:20:17
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:20:17
+Habitación 2,Aire acondicionado,24 C,03/12/2019,15:20:17
+Baño,Lavamanos,Se abrió,03/12/2019,15:20:27
+Baño,Lavamanos,Se cerró,03/12/2019,15:20:37
+Cocina,Refrigerador,5 C,03/12/2019,15:24:01
+Cocina,Congelador,-17 C,03/12/2019,15:24:01
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:24:01
+Habitación 2,Aire acondicionado,24 C,03/12/2019,15:24:01
+Techo,Llave de paso,Se abrió,03/12/2019,15:24:06
+Baño,Lavamanos,Se abrió,03/12/2019,15:24:08
+Baño,Regadera,Se abrió,03/12/2019,15:24:09
+Baño,Retrete,Se descargó,03/12/2019,15:24:11
+Techo,Llave de paso,Se cerró,03/12/2019,15:24:24
+Cocina,Refrigerador,5 C,03/12/2019,15:25:02
+Cocina,Congelador,-17 C,03/12/2019,15:25:02
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:25:02
+Habitación 2,Aire acondicionado,24 C,03/12/2019,15:25:02
+Techo,Llave de paso,Se abrió,03/12/2019,15:25:11
+Techo,Llave de paso,Se cerró,03/12/2019,15:25:25
+Cocina,Refrigerador,5 C,03/12/2019,15:26:07
+Cocina,Congelador,-17 C,03/12/2019,15:26:07
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:26:07
+Habitación 2,Aire acondicionado,24 C,03/12/2019,15:26:07
+Techo,Llave de paso,Se abrió,03/12/2019,15:26:10
+Baño,Lavamanos,Se abrió,03/12/2019,15:26:15
+Baño,Regadera,Se abrió,03/12/2019,15:26:15
+Techo,Llave de paso,Se cerró,03/12/2019,15:26:31
+Baño,Lavamanos,Se cerró,03/12/2019,15:26:35
+Baño,Regadera,Se cerró,03/12/2019,15:26:37
+Cocina,Refrigerador,5 C,03/12/2019,15:27:33
+Cocina,Congelador,-17 C,03/12/2019,15:27:33
+Habitación 1,Aire acondicionado,20 C,03/12/2019,15:27:33
+Habitación 2,Aire acondicionado,24 C,03/12/2019,15:27:33
+Techo,Llave de paso,Se abrió,03/12/2019,15:27:36
+Techo,Llave de paso,Se cerró,03/12/2019,15:27:43

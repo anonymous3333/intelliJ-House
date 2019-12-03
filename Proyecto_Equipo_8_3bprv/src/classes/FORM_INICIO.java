@@ -24,13 +24,13 @@ import javax.swing.SpinnerNumberModel;
  * @author POE3BPRV
  */
 public class FORM_INICIO extends javax.swing.JFrame {
-    ArrayList<String> estados = new ArrayList<>();  //Almacena el estado de los objetos en tiempo de ejecución
-    ActualizaValores actualiza = new ActualizaValores(estados); //Hilo para actualizar y guardar los estados de los objetos
-    Date fh;  //Objeto para obtener la hora y fecha
-    DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm:ss");   //Formato de fecha y hora
-    ObtenerClima consulta_clima;    //Crea un hilo para consultar el estado del clima
-    Integer temph1;
-    Integer temph2;
+    private ArrayList<String> estados = new ArrayList<>();  //Almacena el estado de los objetos en tiempo de ejecución
+    private ActualizaValores actualiza = new ActualizaValores(estados); //Hilo para actualizar y guardar los estados de los objetos
+    private Date fh;  //Objeto para obtener la hora y fecha
+    private DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm:ss");   //Formato de fecha y hora
+    private ObtenerClima consulta_clima;    //Crea un hilo para consultar el estado del clima
+    private Integer temph1;
+    private Integer temph2;
     float temp_casa;    //Temperatura de la casa, 3 grados por encima del clima exterior
     int nllaves;
     
@@ -55,6 +55,9 @@ public class FORM_INICIO extends javax.swing.JFrame {
     File sonido_horno = new File("src/audio/horno.wav");
     File sonido_int = new File("src/audio/switch.wav");
     File sonido_venti = new File("src/audio/ventilador.wav");
+    File sonido_lavamanos = new File("src/audio/lavamanos.wav");
+    File sonido_regadera = new File("src/audio/regadera.wav");
+    File sonido_retrete = new File("src/audio/retrete.wav");
     
     
     public FORM_INICIO() {
@@ -65,7 +68,6 @@ public class FORM_INICIO extends javax.swing.JFrame {
         //Hilos para guardar cambios y consultar clima exterior
         actualiza.execute();
         //consulta_clima.execute();
-        temp_casa=Float.parseFloat(this.temp_exterior.getText())+3;
         cargaControles();
         cargaEstados();
         bomba.execute();
@@ -271,29 +273,12 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz6.setForeground(Color.RED);
         }
         
-        //Lavamanos
-        if(this.estados.get(18).equals(1)){
-            lavamanos.setSelected(true);
-        }else{
-            lavamanos.setSelected(false);
-        }
-        
-        //Regadera
-        if(this.estados.get(19).equals(1)){
-            regadera.setSelected(true);
-        }else{
-            regadera.setSelected(false);
-        }
-        
         //Nivel de agua
-        porcentaje_agua.setText(this.estados.get(20));
+        porcentaje_agua.setText(this.estados.get(18));
         
-        //Llave de paso
-        if(this.estados.get(21).equals("1")){
-            llave_de_paso.setSelected(true);
-        }else{
-            llave_de_paso.setSelected(false);
-        }
+        temp_casa=Float.parseFloat(this.temp_exterior.getText())+3;
+        tempHab1.setText(Float.toString(temp_casa));
+        tempHab2.setText(Float.toString(temp_casa));
     }
     
     private void cargaControles(){
@@ -451,6 +436,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
         regadera = new javax.swing.JToggleButton();
         jButton1 = new javax.swing.JButton();
         panel_niveles_agua = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
         porcentaje_agua = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         nivel_agua = new javax.swing.JProgressBar();
@@ -712,7 +698,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
 
         img_tele2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tele.gif"))); // NOI18N
         img_tele2.setText("jLabel7");
-        panel_Hab3.add(img_tele2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 152, 210, 150));
+        panel_Hab3.add(img_tele2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 140, 210, 150));
 
         img_venti2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ventilador.gif"))); // NOI18N
         img_venti2.setText("ventilador2");
@@ -792,14 +778,21 @@ public class FORM_INICIO extends javax.swing.JFrame {
 
         panel_niveles_agua.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel15.setText("Nivel de agua:");
+        panel_niveles_agua.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 320, -1, -1));
+
+        porcentaje_agua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         porcentaje_agua.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         porcentaje_agua.setText("100");
-        panel_niveles_agua.add(porcentaje_agua, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 20, 30));
+        panel_niveles_agua.add(porcentaje_agua, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, 40, 30));
 
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("%");
-        panel_niveles_agua.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 340, 20, 30));
+        panel_niveles_agua.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 350, 20, 30));
 
+        nivel_agua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         nivel_agua.setOrientation(1);
         nivel_agua.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -1263,42 +1256,44 @@ public class FORM_INICIO extends javax.swing.JFrame {
 
     private void lavamanosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lavamanosActionPerformed
         // TODO add your handling code here:
+        Sonido.play(sonido_lavamanos);
         if(lavamanos.isSelected()){
             nllaves++;
             n_llaves.setText(Integer.toString(nllaves));
-            this.estados.set(18,"1");
+            
             guardaRegistros("Baño", "LVM", "Se abrió");
         }else{
             nllaves--;
             n_llaves.setText(Integer.toString(nllaves));
-            this.estados.set(18,"0");
+            
             guardaRegistros("Baño", "LVM", "Se cerró");
         }
-        
     }//GEN-LAST:event_lavamanosActionPerformed
 
     private void regaderaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regaderaActionPerformed
         // TODO add your handling code here:
+        Sonido.play(sonido_regadera);
         if(regadera.isSelected()){
             nllaves++;
             n_llaves.setText(Integer.toString(nllaves));
-            this.estados.set(19,"1");
+
             guardaRegistros("Baño", "RG", "Se abrió");
         }else{
             nllaves--;
             n_llaves.setText(Integer.toString(nllaves));
-            this.estados.set(19,"0");
+            
             guardaRegistros("Baño", "RG", "Se cerró");
         }
+        
     }//GEN-LAST:event_regaderaActionPerformed
 
     private void llave_de_pasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_llave_de_pasoActionPerformed
         // TODO add your handling code here:
         if(llave_de_paso.isSelected()){
-            this.estados.set(21,"1");
+            
             guardaRegistros("Techo", "LP", "Se abrió");
         }else{
-            this.estados.set(21,"0");
+            
             guardaRegistros("Techo", "LP", "Se cerró");
         }
     }//GEN-LAST:event_llave_de_pasoActionPerformed
@@ -1306,6 +1301,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if(nivel_agua.getValue()>0){
+            Sonido.play(sonido_retrete);
             nivel_agua.setValue(nivel_agua.getValue()-5);
             porcentaje_agua.setText(Integer.toString(nivel_agua.getValue()));
             guardaRegistros("Baño", "RT", "Se descargó");
@@ -1316,7 +1312,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
 
     private void nivel_aguaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nivel_aguaStateChanged
         // TODO add your handling code here:
-        this.estados.set(20,porcentaje_agua.getText());
+        this.estados.set(18,porcentaje_agua.getText());
     }//GEN-LAST:event_nivel_aguaStateChanged
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1398,6 +1394,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -16,9 +16,9 @@ import javax.swing.table.DefaultTableModel;
  * @author kevin
  */
 public class FORM_REGISTRO_EVENTOS extends javax.swing.JFrame {
-    DefaultTableModel tm;
-    String header[] = {"Habitación","Objeto","Cambio","Fecha","Hora"};
-    String data[][] ={};
+    private DefaultTableModel tm;
+    private String header[] = {"Habitación","Objeto","Cambio","Fecha","Hora"};
+    private String data[][] ={};
     /**
      * Creates new form FORM_REGISTRO_EVENTOS
      */
