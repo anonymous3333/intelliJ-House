@@ -49,6 +49,7 @@ public class ActualizaValores extends SwingWorker<Void, Void>{
         }
     }
     
+    @Override
     public Void doInBackground(){
         String[] buffer = leeArchivo("estado_actual.txt").split(",");
         lista_status_actual.addAll(Arrays.asList(buffer));

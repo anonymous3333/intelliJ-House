@@ -11,7 +11,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
-import sun.jvm.hotspot.tools.soql.SOQL;
 
 /**
  *
@@ -19,10 +18,10 @@ import sun.jvm.hotspot.tools.soql.SOQL;
  */
 public class BajaAgua extends SwingWorker<Void, Void>{
     
-    private JProgressBar lBar;  //Barra de progreso con el el porcentaje de agua
-    private JLabel nllaves;     //Label con el número de llaves abiertas
-    private JLabel porcentaje;  //Label con el porcentaje de agua
-    private JToggleButton llave_paso;   //Botón de llave de paso
+    private final JProgressBar lBar;  //Barra de progreso con el el porcentaje de agua
+    private final JLabel nllaves;     //Label con el número de llaves abiertas
+    private final JLabel porcentaje;  //Label con el porcentaje de agua
+    private final JToggleButton llave_paso;   //Botón de llave de paso
     private boolean stop=false;     //Bandera de continuación
     private int dif;    //Diferencia entre llaves abiertas
     
@@ -50,7 +49,7 @@ public class BajaAgua extends SwingWorker<Void, Void>{
                 if(dif==0 && llave_paso.isSelected() && stop==false){
                     porcentaje.setText(Integer.toString(Integer.parseInt(porcentaje.getText())+10));
                     lBar.setValue(Integer.parseInt(porcentaje.getText()));
-                }else if(dif>0 && stop==false){
+                }else if(dif>0 && stop==false){//Si hay llaves abiertas y no está bloqueado vacía baja el nivel del agua
                     porcentaje.setText(Integer.toString(Integer.parseInt(porcentaje.getText())-dif));
                     lBar.setValue(Integer.parseInt(porcentaje.getText()));
                 }

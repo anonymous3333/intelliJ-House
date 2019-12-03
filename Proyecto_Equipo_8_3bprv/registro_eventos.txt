@@ -1,9 +1,4 @@
-Habitación 3,Ventilador,Encendido,01/12/2019,15:03:51
-Habitación 3,Ventilador,Apagado,01/12/2019,15:03:51
-Habitación 2,Aire acondicionado,Encendido,01/12/2019,15:06:13
-Habitación 2,Aire acondicionado,Apagado,01/12/2019,15:06:13
-Sala,Luces,Apagado,01/12/2019,15:09:01
-Sala,Luces,Encendido,01/12/2019,15:09:01
-Habitación 1,Luces,Apagado,01/12/2019,15:51:20
-Habitación 1,Luces,Encendido,01/12/2019,15:51:20
-Toda la casa,Detector de movimiento,Encendido,01/12/2019,15:57:58
+Habitación 1,Aire acondicionado,24C,02/12/2019,22:00:00
+Habitación 2,Aire acondicionado,22C,02/12/2019,22:00:01
+Habitación 1,Aire acondicionado,24 C,02/12/2019,22:04:00
+Habitación 2,Aire acondicionado,22 C,02/12/2019,22:04:00

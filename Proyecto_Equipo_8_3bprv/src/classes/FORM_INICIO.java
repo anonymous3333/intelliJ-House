@@ -26,7 +26,7 @@ import javax.swing.SpinnerNumberModel;
 public class FORM_INICIO extends javax.swing.JFrame {
     ArrayList<String> estados = new ArrayList<>();  //Almacena el estado de los objetos en tiempo de ejecución
     ActualizaValores actualiza = new ActualizaValores(estados); //Hilo para actualizar y guardar los estados de los objetos
-    Date fh = new Date();   //Objeto para obtener la hora y fecha
+    Date fh;  //Objeto para obtener la hora y fecha
     DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm:ss");   //Formato de fecha y hora
     ObtenerClima consulta_clima;    //Crea un hilo para consultar el estado del clima
     Integer temph1;
@@ -64,11 +64,11 @@ public class FORM_INICIO extends javax.swing.JFrame {
         BajaAgua bomba = new BajaAgua(nivel_agua,n_llaves,porcentaje_agua,llave_de_paso);
         //Hilos para guardar cambios y consultar clima exterior
         actualiza.execute();
-        consulta_clima.execute();
-        bomba.execute();
+        //consulta_clima.execute();
         temp_casa=Float.parseFloat(this.temp_exterior.getText())+3;
         cargaControles();
         cargaEstados();
+        bomba.execute();
     }
     
     
@@ -270,6 +270,30 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz6.setText("Luces: OFF");
             luz6.setForeground(Color.RED);
         }
+        
+        //Lavamanos
+        if(this.estados.get(18).equals(1)){
+            lavamanos.setSelected(true);
+        }else{
+            lavamanos.setSelected(false);
+        }
+        
+        //Regadera
+        if(this.estados.get(19).equals(1)){
+            regadera.setSelected(true);
+        }else{
+            regadera.setSelected(false);
+        }
+        
+        //Nivel de agua
+        porcentaje_agua.setText(this.estados.get(20));
+        
+        //Llave de paso
+        if(this.estados.get(21).equals("1")){
+            llave_de_paso.setSelected(true);
+        }else{
+            llave_de_paso.setSelected(false);
+        }
     }
     
     private void cargaControles(){
@@ -299,9 +323,8 @@ public class FORM_INICIO extends javax.swing.JFrame {
         component.setIcon(image);
     }
     
-    private void guardaRegistros(String hab,String evt_code,String state){
+    private void guardaRegistros(String hab,String evt_code,String change){
         String objeto=null;
-        String change;
         try {
             FileWriter fw = new FileWriter("registro_eventos.txt",true);
             switch(evt_code){
@@ -325,17 +348,35 @@ public class FORM_INICIO extends javax.swing.JFrame {
                     break;
                 case "C":
                     objeto="Congelador";
+                    break;
                 case "H":
                     objeto="Horno";
                     break;
+                case "LVM":
+                    objeto="Lavamanos";
+                    break;
+                case "RG":
+                    objeto="Regadera";
+                    break;
+                case "RT":
+                    objeto="Retrete";
+                    break;
+                case "LP":
+                    objeto="Llave de paso";
+                    break;
             }
-            if (state.equals("1")) {
-                change="Encendido";
-            } else if (state.equals("0")) {
-                change="Apagado";
-            }else{
-                change="Cambio de temperatura:"+state+" C";
-            }
+//            if (state.equals("1")) {
+//                change="Se encendió";
+//            } else if (state.equals("0")) {
+//                change="Se apagó";
+//            }else if(state.equals("Abierta")){
+//                change="Se abrió";
+//            }else if(state.equals("Cerrada")){
+//                change="Se cerró";
+//            }else{
+//                change="Temperatura:"+state+" C";
+//            }
+            fh=new Date();
             fw.write(hab+","+objeto+","+change+","+hourdateFormat.format(fh)+"\n");
             fw.close();
         } catch (IOException e) {
@@ -358,7 +399,6 @@ public class FORM_INICIO extends javax.swing.JFrame {
         img_vistaGral = new javax.swing.JLabel();
         detectorMov_btn = new javax.swing.JToggleButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         panel_Sala = new javax.swing.JPanel();
         img_tele1 = new javax.swing.JLabel();
         img_venti1 = new javax.swing.JLabel();
@@ -409,9 +449,10 @@ public class FORM_INICIO extends javax.swing.JFrame {
         luz6 = new javax.swing.JToggleButton();
         lavamanos = new javax.swing.JToggleButton();
         regadera = new javax.swing.JToggleButton();
-        retrete = new javax.swing.JToggleButton();
+        jButton1 = new javax.swing.JButton();
         panel_niveles_agua = new javax.swing.JPanel();
         porcentaje_agua = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
         nivel_agua = new javax.swing.JProgressBar();
         img_tinaco = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -429,8 +470,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         fondo_clima = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("InteliJ House");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         paneles.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -465,14 +511,6 @@ public class FORM_INICIO extends javax.swing.JFrame {
             }
         });
         panel_vGeneral.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 60, 160, -1));
-
-        jButton4.setText("Salir");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        panel_vGeneral.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 60, 100, -1));
 
         paneles.addTab("Vista General", panel_vGeneral);
 
@@ -742,13 +780,13 @@ public class FORM_INICIO extends javax.swing.JFrame {
         });
         panel_Bath.add(regadera, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 130, 150, -1));
 
-        retrete.setText("Retrete");
-        retrete.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Retrete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                retreteActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        panel_Bath.add(retrete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 180, 150, -1));
+        panel_Bath.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 170, 150, -1));
 
         paneles.addTab("Baño", panel_Bath);
 
@@ -756,9 +794,18 @@ public class FORM_INICIO extends javax.swing.JFrame {
 
         porcentaje_agua.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         porcentaje_agua.setText("100");
-        panel_niveles_agua.add(porcentaje_agua, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 330, 40, 30));
+        panel_niveles_agua.add(porcentaje_agua, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, 20, 30));
+
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("%");
+        panel_niveles_agua.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 340, 20, 30));
 
         nivel_agua.setOrientation(1);
+        nivel_agua.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                nivel_aguaStateChanged(evt);
+            }
+        });
         panel_niveles_agua.add(nivel_agua, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 230, 230));
 
         img_tinaco.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -896,14 +943,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
             venti2_btn.setForeground(Color.GREEN);
             img_venti2.setVisible(true);
             this.estados.set(16,"1");
+            guardaRegistros("Habitación 3", "V", "Se encendió");
         }else{
             Sonido.play(sonido_venti);
             venti2_btn.setText("Ventilador: OFF");
             venti2_btn.setForeground(Color.RED);
             img_venti2.setVisible(false);
             this.estados.set(16,"0");
+            guardaRegistros("Habitación 3", "V", "Se apagó");
         }
-        guardaRegistros("Habitación 3", "V", this.estados.get(16));
+        
     }//GEN-LAST:event_venti2_btnActionPerformed
 
     private void aire_acondicionado2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aire_acondicionado2ActionPerformed
@@ -916,6 +965,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTemp2.setEnabled(true);
             this.tempHab2.setText(controlTemp2.getValue().toString());
             this.estados.set(12,"1");
+            guardaRegistros("Habitación 2", "AA","Se encendió");
         }else{
             aire_acondicionado2.setText("Aire acondicionado: OFF");
             aire_acondicionado2.setForeground(Color.RED);
@@ -923,8 +973,9 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTemp2.setEnabled(false);
             this.tempHab2.setText(Float.toString(temp_casa));
             this.estados.set(12,"0");;
+            guardaRegistros("Habitación 2", "AA", "Se apagó");
         }
-        guardaRegistros("Habitación 2", "AA", this.estados.get(12));
+        
     }//GEN-LAST:event_aire_acondicionado2ActionPerformed
 
     private void aire_acondicionado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aire_acondicionado1ActionPerformed
@@ -937,6 +988,7 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTemp1.setEnabled(true);
             this.tempHab1.setText(controlTemp1.getValue().toString());
             this.estados.set(9,"1");
+            guardaRegistros("Habitación 1", "AA", "Se encendió");
         }else{
             aire_acondicionado1.setText("Aire acondicionado: OFF");
             aire_acondicionado1.setForeground(Color.RED);
@@ -944,8 +996,9 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTemp1.setEnabled(false);
             this.tempHab1.setText(Float.toString(temp_casa));
             this.estados.set(9,"0");
+            guardaRegistros("Habitación 1", "AA", "Se apagó");
         }
-        guardaRegistros("Habitación 1", "AA", this.estados.get(9));
+        
     }//GEN-LAST:event_aire_acondicionado1ActionPerformed
 
     private void venti1_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_venti1_btnActionPerformed
@@ -956,14 +1009,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
             venti1_btn.setForeground(Color.GREEN);
             img_venti1.setVisible(true);
             this.estados.set(3,"1");
+            guardaRegistros("Sala", "V", "Se encendió");
         }else{
             Sonido.play(sonido_venti);
             venti1_btn.setText("Ventilador: OFF");
             venti1_btn.setForeground(Color.RED);
             img_venti1.setVisible(false);
             this.estados.set(3,"0");
+            guardaRegistros("Sala", "V", "Se encendió");
         }
-        guardaRegistros("Sala", "V", this.estados.get(3));
+        
     }//GEN-LAST:event_venti1_btnActionPerformed
 
     private void detectorMov_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detectorMov_btnActionPerformed
@@ -972,12 +1027,14 @@ public class FORM_INICIO extends javax.swing.JFrame {
             detectorMov_btn.setText("Detector de movimiento: ON");
             detectorMov_btn.setForeground(Color.GREEN);
             this.estados.set(0,"1");
+            guardaRegistros("Toda la casa", "A", "Se encendió");
         }else{
             detectorMov_btn.setText("Detector de movimiento: OFF");
             detectorMov_btn.setForeground(Color.RED);
             this.estados.set(0,"0");
+            guardaRegistros("Toda la casa", "A", "Se apagó");
         }
-        guardaRegistros("Toda la casa", "A", this.estados.get(0));
+        
     }//GEN-LAST:event_detectorMov_btnActionPerformed
 
     private void img_vistaGralMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_img_vistaGralMouseExited
@@ -1002,13 +1059,15 @@ public class FORM_INICIO extends javax.swing.JFrame {
             horno.setText("Horno: ON");
             horno.setForeground(Color.GREEN);
             this.estados.set(7,"1");
+            guardaRegistros("Cocina", "H", "Se encendió");
         }else{
             img_horno.setVisible(false);
             horno.setText("Horno: OFF");
             horno.setForeground(Color.RED);
             this.estados.set(7,"0");
+            guardaRegistros("Cocina", "H", "Se apagó");
         }
-        guardaRegistros("Cocina", "H", this.estados.get(7));
+        
     }//GEN-LAST:event_hornoActionPerformed
 
     private void luz1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz1ActionPerformed
@@ -1019,44 +1078,44 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz1.setForeground(Color.RED);
             cargarImagen(salaAIcon, img_sala);
             this.estados.set(1,"0");
+            guardaRegistros("Sala", "L", "Se apagó");
         }else{
             Sonido.play(sonido_int);
             luz1.setText("Luces: ON");
             luz1.setForeground(Color.GREEN);
             cargarImagen(salaIcon, img_sala);
             this.estados.set(1,"1");
+            guardaRegistros("Sala", "L", "Se encendió");
         }
-        guardaRegistros("Sala", "L", this.estados.get(1));
+        
     }//GEN-LAST:event_luz1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        cerrarForm();
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void controlTemp1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_controlTemp1StateChanged
         // TODO add your handling code here:
             tempHab1.setText(controlTemp1.getValue().toString());
             this.estados.set(10,tempHab1.getText());
+            guardaRegistros("Habitación 1", "AA", this.estados.get(10)+" C");
     }//GEN-LAST:event_controlTemp1StateChanged
 
     private void controlTemp2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_controlTemp2StateChanged
         // TODO add your handling code here
-
             tempHab2.setText(controlTemp2.getValue().toString());
             this.estados.set(13,tempHab2.getText());
+            guardaRegistros("Habitación 2", "AA", this.estados.get(13)+" C");
     }//GEN-LAST:event_controlTemp2StateChanged
 
     private void control_refriStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_control_refriStateChanged
         // TODO add your handling code here:
         tempRefri.setText(control_refri.getValue().toString());
         this.estados.set(5,control_refri.getValue().toString());
+        guardaRegistros("Cocina","R", estados.get(5)+" C");
     }//GEN-LAST:event_control_refriStateChanged
 
     private void control_congeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_control_congeStateChanged
         // TODO add your handling code here:
         temp_Cong.setText(control_conge.getValue().toString());
         this.estados.set(6,control_conge.getValue().toString());
+        guardaRegistros("Cocina","C", estados.get(6)+" C");
     }//GEN-LAST:event_control_congeStateChanged
 
     private void controlTele1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_controlTele1ActionPerformed
@@ -1066,13 +1125,15 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTele1.setText("Televisión: ON");
             controlTele1.setForeground(Color.GREEN);
             this.estados.set(2,"1");
+            guardaRegistros("Sala", "T", "Se encendió");
         }else{
             img_tele1.setVisible(false);
             controlTele1.setText("Televisión: OFF");
             controlTele1.setForeground(Color.RED);
             this.estados.set(2,"0");
+            guardaRegistros("Sala", "T", "Se apagó");
         }
-        guardaRegistros("Sala", "T", this.estados.get(2));
+        
     }//GEN-LAST:event_controlTele1ActionPerformed
 
     private void controlTele2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_controlTele2ActionPerformed
@@ -1082,13 +1143,15 @@ public class FORM_INICIO extends javax.swing.JFrame {
             controlTele2.setText("Televisión: ON");
             controlTele2.setForeground(Color.GREEN);
             this.estados.set(15,"1");
+            guardaRegistros("Habitación 3", "T", "Se encendió");
         }else{
             img_tele2.setVisible(false);
             controlTele2.setText("Televisión: OFF");
             controlTele2.setForeground(Color.RED);
             this.estados.set(15,"0");
+            guardaRegistros("Habitación 3", "T", "Se apagó");
         }
-        guardaRegistros("Habitación 3", "T", this.estados.get(15));
+        
     }//GEN-LAST:event_controlTele2ActionPerformed
 
     private void luz3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz3ActionPerformed
@@ -1099,14 +1162,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz3.setForeground(Color.RED);
             cargarImagen(hab1AIcon, img_hab1);
             this.estados.set(8,"0");
+            guardaRegistros("Habitación 1", "L", "Se apagó");
         }else{
             Sonido.play(sonido_int);
             luz3.setText("Luces: ON");
             luz3.setForeground(Color.GREEN);
             cargarImagen(hab1Icon, img_hab1);
             this.estados.set(8,"1");
+            guardaRegistros("Habitación 1", "L", "Se apagó");
         }
-        guardaRegistros("Habitación 1", "L", this.estados.get(8));
+        
     }//GEN-LAST:event_luz3ActionPerformed
 
     private void luz4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz4ActionPerformed
@@ -1117,14 +1182,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz4.setForeground(Color.RED);
             cargarImagen(hab2AIcon, img_hab2);
             this.estados.set(11,"0");
+            guardaRegistros("Habitación 2", "L", "Se apagó");
         }else{
             Sonido.play(sonido_int);
             luz4.setText("Luces: ON");
             luz4.setForeground(Color.GREEN);
             cargarImagen(hab2Icon, img_hab2);
             this.estados.set(11,"1");
+            guardaRegistros("Habitación 2", "L", "Se encendió");
         }
-        guardaRegistros("Habitación 2", "L", this.estados.get(11));
+        
     }//GEN-LAST:event_luz4ActionPerformed
 
     private void luz2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz2ActionPerformed
@@ -1135,14 +1202,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz2.setForeground(Color.RED);
             cargarImagen(cocinaAiIcon, img_cocina);
             this.estados.set(4,"0");
+            guardaRegistros("Cocina", "L","Se apagó");
         }else{
             Sonido.play(sonido_int);
             luz2.setText("Luces: ON");
             luz2.setForeground(Color.GREEN);
             cargarImagen(cocinaIcon, img_cocina);
             this.estados.set(4,"1");
+            guardaRegistros("Cocina", "L", "Se encendió");
         }
-        guardaRegistros("Cocina", "L", this.estados.get(4));
+        
     }//GEN-LAST:event_luz2ActionPerformed
 
     private void luz5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz5ActionPerformed
@@ -1153,14 +1222,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz5.setForeground(Color.RED);
             cargarImagen(hab3AIcon, img_hab3);
             this.estados.set(14,"0");
+            guardaRegistros("Habitación 3", "L", "Se apagó");
         }else{
             Sonido.play(sonido_int);
             luz5.setText("Luces: ON");
             luz5.setForeground(Color.GREEN);
             cargarImagen(hab3Icon, img_hab3);
             this.estados.set(14,"1");
+            guardaRegistros("Habitación 3", "L", "Se encendió");
         }
-        guardaRegistros("Habitación 3", "L", this.estados.get(14));
+        
     }//GEN-LAST:event_luz5ActionPerformed
 
     private void luz6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_luz6ActionPerformed
@@ -1171,14 +1242,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
             luz6.setForeground(Color.RED);
             cargarImagen(bathAiIcon, img_bath);
             this.estados.set(17,"0");
+            guardaRegistros("Baño", "L", "Se apagó");
         }else{
             Sonido.play(sonido_int);
             luz6.setText("Luces: ON");
             luz6.setForeground(Color.GREEN);
             cargarImagen(bathIcon, img_bath);
             this.estados.set(17,"1");
+            guardaRegistros("Baño", "L", "Se encendió");
         }
-        guardaRegistros("Baño", "L", this.estados.get(17));
+        
     }//GEN-LAST:event_luz6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -1193,10 +1266,15 @@ public class FORM_INICIO extends javax.swing.JFrame {
         if(lavamanos.isSelected()){
             nllaves++;
             n_llaves.setText(Integer.toString(nllaves));
+            this.estados.set(18,"1");
+            guardaRegistros("Baño", "LVM", "Se abrió");
         }else{
             nllaves--;
             n_llaves.setText(Integer.toString(nllaves));
+            this.estados.set(18,"0");
+            guardaRegistros("Baño", "LVM", "Se cerró");
         }
+        
     }//GEN-LAST:event_lavamanosActionPerformed
 
     private void regaderaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regaderaActionPerformed
@@ -1204,26 +1282,47 @@ public class FORM_INICIO extends javax.swing.JFrame {
         if(regadera.isSelected()){
             nllaves++;
             n_llaves.setText(Integer.toString(nllaves));
+            this.estados.set(19,"1");
+            guardaRegistros("Baño", "RG", "Se abrió");
         }else{
             nllaves--;
             n_llaves.setText(Integer.toString(nllaves));
+            this.estados.set(19,"0");
+            guardaRegistros("Baño", "RG", "Se cerró");
         }
     }//GEN-LAST:event_regaderaActionPerformed
 
-    private void retreteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retreteActionPerformed
-        // TODO add your handling code here:
-        if(retrete.isSelected()){
-            nllaves++;
-            n_llaves.setText(Integer.toString(nllaves));
-        }else{
-            nllaves--;
-            n_llaves.setText(Integer.toString(nllaves));
-        }
-    }//GEN-LAST:event_retreteActionPerformed
-
     private void llave_de_pasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_llave_de_pasoActionPerformed
         // TODO add your handling code here:
+        if(llave_de_paso.isSelected()){
+            this.estados.set(21,"1");
+            guardaRegistros("Techo", "LP", "Se abrió");
+        }else{
+            this.estados.set(21,"0");
+            guardaRegistros("Techo", "LP", "Se cerró");
+        }
     }//GEN-LAST:event_llave_de_pasoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if(nivel_agua.getValue()>0){
+            nivel_agua.setValue(nivel_agua.getValue()-5);
+            porcentaje_agua.setText(Integer.toString(nivel_agua.getValue()));
+            guardaRegistros("Baño", "RT", "Se descargó");
+        }
+        else
+            JOptionPane.showMessageDialog(null, "No hay agua en el tanque");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void nivel_aguaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_nivel_aguaStateChanged
+        // TODO add your handling code here:
+        this.estados.set(20,porcentaje_agua.getText());
+    }//GEN-LAST:event_nivel_aguaStateChanged
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        cerrarForm();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -1291,13 +1390,14 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JLabel img_venti2D;
     private javax.swing.JLabel img_vistaGral;
     private javax.swing.JPanel info_clima_container;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1328,7 +1428,6 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JTabbedPane paneles;
     private javax.swing.JLabel porcentaje_agua;
     private javax.swing.JToggleButton regadera;
-    private javax.swing.JToggleButton retrete;
     public static javax.swing.JLabel tempHab1;
     public static javax.swing.JLabel tempHab2;
     private javax.swing.JLabel tempRefri;
