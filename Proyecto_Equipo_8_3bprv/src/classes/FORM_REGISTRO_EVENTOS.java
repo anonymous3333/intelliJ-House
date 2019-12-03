@@ -67,6 +67,7 @@ public class FORM_REGISTRO_EVENTOS extends javax.swing.JFrame {
         update_btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Registro de eventos");
 
         tabla_registros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

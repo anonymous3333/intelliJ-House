@@ -24,14 +24,15 @@ import javax.swing.SpinnerNumberModel;
  * @author POE3BPRV
  */
 public class FORM_INICIO extends javax.swing.JFrame {
-    ArrayList<String> estados = new ArrayList<>();
-    ActualizaValores actualiza = new ActualizaValores(estados);
-    Date fh = new Date();
-    DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm:ss");
-    ObtenerClima consulta_clima;
+    ArrayList<String> estados = new ArrayList<>();  //Almacena el estado de los objetos en tiempo de ejecución
+    ActualizaValores actualiza = new ActualizaValores(estados); //Hilo para actualizar y guardar los estados de los objetos
+    Date fh = new Date();   //Objeto para obtener la hora y fecha
+    DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy,HH:mm:ss");   //Formato de fecha y hora
+    ObtenerClima consulta_clima;    //Crea un hilo para consultar el estado del clima
     Integer temph1;
     Integer temph2;
-    float temp_casa;
+    float temp_casa;    //Temperatura de la casa, 3 grados por encima del clima exterior
+    int nllaves;
     
     //Carga de imágenes en la memoria
     ImageIcon vista_generalIcon = new ImageIcon("src/img/vista_general.jpg");
@@ -59,10 +60,12 @@ public class FORM_INICIO extends javax.swing.JFrame {
     public FORM_INICIO() {
         initComponents();
         consulta_clima = new ObtenerClima(
-            this.texto_clima,this.temp_exterior,this.hum_exterior,this.img_clima);
+        this.texto_clima,this.temp_exterior,this.hum_exterior,this.img_clima);
+        BajaAgua bomba = new BajaAgua(nivel_agua,n_llaves,porcentaje_agua,llave_de_paso);
         //Hilos para guardar cambios y consultar clima exterior
         actualiza.execute();
         consulta_clima.execute();
+        bomba.execute();
         temp_casa=Float.parseFloat(this.temp_exterior.getText())+3;
         cargaControles();
         cargaEstados();
@@ -404,15 +407,26 @@ public class FORM_INICIO extends javax.swing.JFrame {
         panel_Bath = new javax.swing.JPanel();
         img_bath = new javax.swing.JLabel();
         luz6 = new javax.swing.JToggleButton();
+        lavamanos = new javax.swing.JToggleButton();
+        regadera = new javax.swing.JToggleButton();
+        retrete = new javax.swing.JToggleButton();
+        panel_niveles_agua = new javax.swing.JPanel();
+        porcentaje_agua = new javax.swing.JLabel();
+        nivel_agua = new javax.swing.JProgressBar();
+        img_tinaco = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        n_llaves = new javax.swing.JLabel();
+        llave_de_paso = new javax.swing.JToggleButton();
         panel_clima = new javax.swing.JPanel();
-        img_clima = new javax.swing.JLabel();
-        temp_exterior = new javax.swing.JLabel();
-        texto_clima = new javax.swing.JLabel();
-        hum_exterior = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        info_clima_container = new javax.swing.JPanel();
+        texto_clima = new javax.swing.JLabel();
+        img_clima = new javax.swing.JLabel();
+        hum_exterior = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        temp_exterior = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         fondo_clima = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -710,46 +724,144 @@ public class FORM_INICIO extends javax.swing.JFrame {
                 luz6ActionPerformed(evt);
             }
         });
-        panel_Bath.add(luz6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 30, 140, -1));
+        panel_Bath.add(luz6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 30, 150, -1));
+
+        lavamanos.setText("Lavamanos");
+        lavamanos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lavamanosActionPerformed(evt);
+            }
+        });
+        panel_Bath.add(lavamanos, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 80, 150, -1));
+
+        regadera.setText("Regadera");
+        regadera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regaderaActionPerformed(evt);
+            }
+        });
+        panel_Bath.add(regadera, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 130, 150, -1));
+
+        retrete.setText("Retrete");
+        retrete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                retreteActionPerformed(evt);
+            }
+        });
+        panel_Bath.add(retrete, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 180, 150, -1));
 
         paneles.addTab("Baño", panel_Bath);
 
+        panel_niveles_agua.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        porcentaje_agua.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        porcentaje_agua.setText("100");
+        panel_niveles_agua.add(porcentaje_agua, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 330, 40, 30));
+
+        nivel_agua.setOrientation(1);
+        panel_niveles_agua.add(nivel_agua, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 230, 230));
+
+        img_tinaco.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        img_tinaco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tinaco.png"))); // NOI18N
+        img_tinaco.setText("jLabel13");
+        panel_niveles_agua.add(img_tinaco, new org.netbeans.lib.awtextra.AbsoluteConstraints(103, 63, 540, -1));
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("Llaves abiertas:");
+        panel_niveles_agua.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 70, -1, -1));
+
+        n_llaves.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        n_llaves.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        n_llaves.setText("0");
+        panel_niveles_agua.add(n_llaves, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 70, -1, -1));
+
+        llave_de_paso.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        llave_de_paso.setText("Llave de paso");
+        llave_de_paso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                llave_de_pasoActionPerformed(evt);
+            }
+        });
+        panel_niveles_agua.add(llave_de_paso, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 130, 170, 30));
+
+        paneles.addTab("Niveles de agua", panel_niveles_agua);
+
         panel_clima.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        panel_clima.add(img_clima, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 120, 288, 288));
 
-        temp_exterior.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        temp_exterior.setText("0.0");
-        panel_clima.add(temp_exterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 450, -1, 46));
-
-        texto_clima.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        texto_clima.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        texto_clima.setText("texto_clima");
-        panel_clima.add(texto_clima, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, 288, 31));
-
-        hum_exterior.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        hum_exterior.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        hum_exterior.setText("0.0");
-        panel_clima.add(hum_exterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 450, 75, 46));
-
-        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Temperatura:");
         panel_clima.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 450, -1, 46));
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("C");
-        panel_clima.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 450, -1, 50));
+        info_clima_container.setBackground(new java.awt.Color(204, 255, 255));
+        info_clima_container.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Humedad:");
-        panel_clima.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 450, -1, 46));
+        texto_clima.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        texto_clima.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        texto_clima.setText("texto_clima");
 
-        jLabel8.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        hum_exterior.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        hum_exterior.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        hum_exterior.setText("0.0");
+
+        jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("%");
-        panel_clima.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 450, -1, 46));
+
+        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Humedad:");
+
+        temp_exterior.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        temp_exterior.setText("0.0");
+
+        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("C");
+
+        javax.swing.GroupLayout info_clima_containerLayout = new javax.swing.GroupLayout(info_clima_container);
+        info_clima_container.setLayout(info_clima_containerLayout);
+        info_clima_containerLayout.setHorizontalGroup(
+            info_clima_containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(info_clima_containerLayout.createSequentialGroup()
+                .addContainerGap(189, Short.MAX_VALUE)
+                .addGroup(info_clima_containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, info_clima_containerLayout.createSequentialGroup()
+                        .addGroup(info_clima_containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(img_clima, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(texto_clima, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
+                        .addGap(189, 189, 189))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, info_clima_containerLayout.createSequentialGroup()
+                        .addComponent(temp_exterior)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
+                        .addGap(144, 144, 144)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(hum_exterior)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8)
+                        .addGap(124, 124, 124))))
+        );
+        info_clima_containerLayout.setVerticalGroup(
+            info_clima_containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(info_clima_containerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(texto_clima, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(img_clima, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(info_clima_containerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(hum_exterior, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(temp_exterior, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
+
+        panel_clima.add(info_clima_container, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 670, 480));
 
         fondo_clima.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo_clima.png"))); // NOI18N
         fondo_clima.setText("jLabel9");
@@ -1076,6 +1188,43 @@ public class FORM_INICIO extends javax.swing.JFrame {
         fr.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void lavamanosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lavamanosActionPerformed
+        // TODO add your handling code here:
+        if(lavamanos.isSelected()){
+            nllaves++;
+            n_llaves.setText(Integer.toString(nllaves));
+        }else{
+            nllaves--;
+            n_llaves.setText(Integer.toString(nllaves));
+        }
+    }//GEN-LAST:event_lavamanosActionPerformed
+
+    private void regaderaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regaderaActionPerformed
+        // TODO add your handling code here:
+        if(regadera.isSelected()){
+            nllaves++;
+            n_llaves.setText(Integer.toString(nllaves));
+        }else{
+            nllaves--;
+            n_llaves.setText(Integer.toString(nllaves));
+        }
+    }//GEN-LAST:event_regaderaActionPerformed
+
+    private void retreteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retreteActionPerformed
+        // TODO add your handling code here:
+        if(retrete.isSelected()){
+            nllaves++;
+            n_llaves.setText(Integer.toString(nllaves));
+        }else{
+            nllaves--;
+            n_llaves.setText(Integer.toString(nllaves));
+        }
+    }//GEN-LAST:event_retreteActionPerformed
+
+    private void llave_de_pasoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_llave_de_pasoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_llave_de_pasoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1135,17 +1284,20 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JLabel img_sala;
     private javax.swing.JLabel img_tele1;
     private javax.swing.JLabel img_tele2;
+    private javax.swing.JLabel img_tinaco;
     private javax.swing.JLabel img_venti1;
     private javax.swing.JLabel img_venti1D;
     private javax.swing.JLabel img_venti2;
     private javax.swing.JLabel img_venti2D;
     private javax.swing.JLabel img_vistaGral;
+    private javax.swing.JPanel info_clima_container;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1154,12 +1306,16 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JToggleButton lavamanos;
+    private javax.swing.JToggleButton llave_de_paso;
     private javax.swing.JToggleButton luz1;
     private javax.swing.JToggleButton luz2;
     private javax.swing.JToggleButton luz3;
     private javax.swing.JToggleButton luz4;
     private javax.swing.JToggleButton luz5;
     private javax.swing.JToggleButton luz6;
+    private javax.swing.JLabel n_llaves;
+    private javax.swing.JProgressBar nivel_agua;
     private javax.swing.JPanel panel_Bath;
     private javax.swing.JPanel panel_Cocina;
     private javax.swing.JPanel panel_Hab1;
@@ -1167,8 +1323,12 @@ public class FORM_INICIO extends javax.swing.JFrame {
     private javax.swing.JPanel panel_Hab3;
     private javax.swing.JPanel panel_Sala;
     private javax.swing.JPanel panel_clima;
+    private javax.swing.JPanel panel_niveles_agua;
     private javax.swing.JPanel panel_vGeneral;
     private javax.swing.JTabbedPane paneles;
+    private javax.swing.JLabel porcentaje_agua;
+    private javax.swing.JToggleButton regadera;
+    private javax.swing.JToggleButton retrete;
     public static javax.swing.JLabel tempHab1;
     public static javax.swing.JLabel tempHab2;
     private javax.swing.JLabel tempRefri;
