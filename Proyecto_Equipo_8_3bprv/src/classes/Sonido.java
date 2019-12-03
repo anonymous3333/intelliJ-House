@@ -20,19 +20,13 @@ import javax.swing.JOptionPane;
  */
 public class Sonido {
     
-    public static void play(String path,boolean rep){
-        Clip clip;
-        File archivo;
+    public static void play(File archivo){
         try {
-            archivo = new File(path);
-            clip=AudioSystem.getClip();
+            Clip clip=AudioSystem.getClip();
             AudioInputStream ais = AudioSystem.getAudioInputStream(archivo);
             clip.open(ais);
             clip.start();
-            if(rep == true){
-                clip.loop(clip.LOOP_CONTINUOUSLY);
-            }
-        } catch (Exception e) {
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
             JOptionPane.showMessageDialog(null,"Ocurrió un error al abrir el archivo");
         }
     }
